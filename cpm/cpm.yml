@@ -1,0 +1,11 @@
+name: cpm
+channels :
+    - r
+    - bioconda
+    - conda-forge
+    - defaults
+dependencies :
+    - r-base
+    - r-mass
+    - bioconductor-edger
+    - bioconductor-limma=3.58.1

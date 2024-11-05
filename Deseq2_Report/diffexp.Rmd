@@ -1,0 +1,115 @@
+---
+title: "Endoderm DV polarity during Drosophila gastrulation."
+subtitle: "Bioinformatics project | IBDM | Shruti Pothapragada"
+author:
+- Thomas Vannier | CENTURI Multi-Engineering Platform
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document: 
+    theme: cerulean
+    toc: true
+    toc_float: true
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error=TRUE)
+```
+
+```{r loadLibraries, echo=FALSE, warning=FALSE, message=FALSE}
+library(rmarkdown)
+library(tidyverse)
+library(stringr)
+library(DESeq2)
+library(tinytex)
+library(knitr)
+library(ggplot2)
+library(plotly)
+library(pheatmap)
+library(RColorBrewer)
+library(readr)
+library(DT)
+library(pcaExplorer)
+#library(ashr)
+library(EnhancedVolcano)
+```
+
+[//]: # "Load the various chunks in the various files"
+```{r readChunks, echo=FALSE, warning=TRUE, message=TRUE}
+read_chunk( path="/media/audrey/data/galaxy/tools/myTools/Deseq2_Report/data_quality_galaxy.R")
+read_chunk( path="/media/audrey/data/galaxy/tools/myTools/Deseq2_Report/diffexp_galaxy.R")
+```
+# Data quality assessment by sample clustering and visualization
+
+Here we analyze the similarities and variabilities between the different conditions.
+
+We regularized log transformation with rlog.
+This function transforms the count data to the log2 scale in a way which minimizes
+differences between samples for rows with small counts, and which normalizes with 
+respect to library size. The rlog transformation is more robust in the case
+when the size factors vary widely. The transformation is useful when checking for outliers 
+
+## Heatmap of the count matrix
+
+- Heatmap of the 50 genes with the top and bottom loadings.
+(i.e. the genes that explain the best the variability on the PCA component).
+
+```{r heatmap-count, echo=FALSE, results = "asis", message=FALSE}
+<<heatmap-count>>
+```
+
+## Principal component analysis (PCA)
+
+We report the different components (CP1/CP2 and CP3/CP4) of the PCA
+to see if it fit the expectation from the experimental design.
+PCA are calculated using the regularized log transform (rlog) of 
+the normalized counts for all genes.
+
+```{r plot-pca, echo=FALSE, results = "asis"}
+<<plot-pca>>
+```
+
+## Heatmap of the sample-to-sample distances
+
+We apply the dist function for the transpose of the transformed count matrix to get sample-to-sample distances.
+A heatmap of this distance matrix gives us an overview over similarities and dissimilarities between samples. 
+
+```{r heatmap-distance, echo=FALSE, results = "asis"}
+<<heatmap-distance>>
+```
+
+## Gene counts
+
+We plot the normalized count value of a gene of interest to compare the expression in the different conditions
+
+```{r plot-gene, echo=FALSE, results = "asis"}
+<<plot-gene>>
+```
+
+# Differential expression analysis
+
+In this section we execute an analysis of the differentially expressed genes 
+between the different conditions.
+
+## MA plot and Volcano plot
+
+MA plot representing the log2 fold changes attributable to a given variable over
+the mean of normalized counts for each conditions. 
+Points will be colored in blue if the adjusted p value is less than 0.1.
+Points which fall out of the window are plotted as open triangles pointing 
+either up or down. All genes are presented in the MA plots
+
+Volcanoplot representing the significance versus fold-change on the y and x axes.
+
+For each comparison we listed the target genes with differential expression 
+
+```{r diffexp, echo=FALSE, fig.width=8, fig.height=9, results = "asis", message=FALSE, warning = FALSE}
+<<diffexp>>
+```
+
+## Top differentially expressed genes
+
+```{r toppadj, echo=FALSE, results = "asis", fig.width=9, fig.height=7, message=FALSE, warning = FALSE}
+<<toppadj>>
+```
+

@@ -1,0 +1,22 @@
+<tool id="Deseq2" name="Deseq2" version="1.0+galaxy1" python_template_version="3.5" profile="21.05">
+    <description>Expression différentielle </description>
+    <requirements>
+        <requirement type="package" version="4.0">r-base</requirement>
+        <requirement type="package" version="1.28.0">bioconductor-deseq2</requirement>
+        <requirement type="package" >r-readr</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        Rscript /home/audrey/Documents/Bulk_RNAseq_analyses/galaxy/tools/myTools/Deseq2/deseq2_version2.R --galaxy_input $filter_count --galaxy_output1 $normalized_counts_file --galaxy_output2 $all_reads --galaxy_output3 $deseq2_init_output --galaxy_param_thread $thread --galaxy_param1 $ref_level --galaxy_param2 $coldata
+    ]]></command>
+    <inputs>
+        <param type="data" name="filter_count" label="filter_count" />
+        <param type="integer" name="thread" value="1" label="thread" help=" "/>
+        <param type="text" name="ref_level" value="Dorsalized_torso" label="ref_level" help="Reference to do the comparison"/>
+        <param type="data" name="coldata" label="coldata" help=" "/>
+    </inputs>
+    <outputs>
+        <data name="normalized_counts_file" format="tabular" label="normalized_counts_file" />
+        <data name="all_reads" format="rds" label="all_reads" />
+        <data name="deseq2_init_output" format="txt" label="deseq2_init_output" />
+    </outputs>
+</tool>

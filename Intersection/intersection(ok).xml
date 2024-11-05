@@ -1,0 +1,46 @@
+<tool id="Intersection" name="Intersection" version="1.0+galaxy1" python_template_version="3.5" profile="21.05">
+    <description>Presence or absence of differential expressed genes in different comparisons</description>
+    <requirements>
+        <requirement type="package" version="4.0">r-base</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        Rscript /media/audrey/data/galaxy/tools/myTools/Intersection/intersection.R --output_path1 common_genes --output_path2 stat_common_genes --galaxy_param1 $coldata --galaxy_input1 $comparaison_1_condition_1 --galaxy_input2 $comparaison_1_condition_2 
+    ]]></command>
+    <inputs>
+        <param name="coldata" type="data" format="tabular" label="Metadata"/>
+        <repeat name="comparaison" title="Comparaison" min="1">
+            <param name="comparaison_1_condition_1" type="select" label="Reference 1 _vs_">
+                <options from_dataset="coldata">
+                    <column name="name" index="1"/>
+                    <column name="value" index="1"/>
+                </options>
+            </param>
+            <param name="comparaison_1_condition_2" type="select" label="Mutant 1">
+                <options from_dataset="coldata">
+                    <column name="name" index="1"/>
+                    <column name="value" index="1"/>
+                </options>
+            </param>
+            <param name="comparaison_2_condition_1" type="select" label="And Reference 2 _vs_">
+                <options from_dataset="coldata">
+                    <column name="name" index="1"/>
+                    <column name="value" index="1"/>
+                </options>
+            </param>
+            <param name="comparaison_2_condition_2" type="select" label="Mutant 2">
+                <options from_dataset="coldata">
+                    <column name="name" index="1"/>
+                    <column name="value" index="1"/>
+                </options>
+            </param>
+        </repeat>
+    </inputs>
+    <outputs>
+        <collection type="list" label="common_genes" name="common_genes">
+           <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="common_genes"/>
+        </collection>
+        <collection type="list" label="stat_common_genes" name="stat_common_genes">
+           <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="stat_common_genes"/>
+        </collection>
+    </outputs>
+</tool>

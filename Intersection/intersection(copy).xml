@@ -1,0 +1,28 @@
+<tool id="Intersection" name="Intersection" version="1.0+galaxy1" python_template_version="3.5" profile="21.05">
+    <description>Presence or absence of differential expressed genes in different comparisons</description>
+    <requirements>
+        <requirement type="package" version="4.0">r-base</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        Rscript /media/audrey/data/galaxy/tools/myTools/Intersection/intersection.R --output_path1 common_genes --output_path2 stat_common_genes --galaxy_input1 $comparaison_1 --galaxy_input2 $comparaison_2 --galaxy_input3 $comparaison_1_stat --galaxy_input4 $comparaison_2_stat --galaxy_input5 $coldata
+    ]]></command>
+    <inputs>
+        <repeat name="comparaison" title="Comparaison" min="1">
+            <param name="coldata" type="select" label="Choose a condition" help=" ">
+                <options from_data_table="coldata">
+                    <column name="condition" index="1"/>
+                </options>
+            </param>
+        </repeat>
+        <param type="data" name="comparaison_1_stat" label="comparaison_1_stat" help="example : Ventralized_torso_vs_Ventralized_all_genes_stats.tsv"/>
+        <param type="data" name="comparaison_2_stat" label="comparaison_2_stat" help="example : Ventralized_torso_vs_Ventralized_all_genes_stats.tsv"/>
+    </inputs>
+    <outputs>
+        <collection type="list" label="common_genes" name="common_genes">
+           <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="common_genes"/>
+        </collection>
+        <collection type="list" label="stat_common_genes" name="stat_common_genes">
+           <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="stat_common_genes"/>
+        </collection>
+    </outputs>
+</tool>

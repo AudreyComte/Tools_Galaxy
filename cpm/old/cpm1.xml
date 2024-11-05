@@ -1,0 +1,20 @@
+<tool id="test" name="test" version="1.0+galaxy1" python_template_version="3.5" profile="21.05">
+    <description>Counts Per Million and Filtering</description>
+    <requirements>
+        <requirement type="package" version="4.0">r-base</requirement>
+        <requirement type="package" version="3.30.0">bioconductor-edger</requirement>
+        <requirement type="package" version="7.3-53">r-mass</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        Rscript /home/audrey/Documents/Bulk_RNAseq_analyses/galaxy/tools/myTools/cpm/cpm.R --input1 $galaxy_input1 --input2 $galaxy_input2 --output1 $galaxy_output1 --output2 $galaxy_output2
+    ]]></command>
+    <inputs>
+        <param type="data" name="galaxy_input1" format="csv" /> 
+        <param type="data" name="galaxy_input2" format="csv" /> 
+        <param type="integer" name="parameter1" value="7" min="2" max="10" label="Length of Kmer to look for" help="Note: the Kmer test is disabled and needs to be enabled using a custom Submodule and limits file"/>
+    </inputs>
+    <outputs>
+        <data name="galaxy_output1" format="csv" label="fichier de sortie1"/>
+        <data name="galaxy_output2" format="csv" label="fichier de sortie2"/>
+    </outputs>
+</tool>

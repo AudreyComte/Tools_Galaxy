@@ -1,0 +1,25 @@
+<tool id="cpm" name="cpm" version="1.0+galaxy1" python_template_version="3.5" profile="21.05">
+    <description>Counts Per Million and Filtering</description>
+    <requirements>
+        <requirement type="package" >r-base</requirement>
+        <requirement type="package" >bioconductor-edger</requirement>
+        <requirement type="package" version="3.58.1">bioconductor-limma</requirement>
+        <requirement type="package" >r-mass</requirement>
+    </requirements>
+    <command detect_errors="exit_code"><![CDATA[
+        Rscript /home/audrey/Documents/Bulk_RNAseq_analyses/galaxy/tools/myTools/cpm/cpm.R --galaxy_input1 $featureCounts_output1 --galaxy_output1 $count --galaxy_output2 $cpm_filtered --galaxy_output3 $count_filtered --galaxy_param1 $thresh_cpm --galaxy_param2 $thresh_sample --galaxy_param3 $rmun_list --galaxy_param4 $rmproj --galaxy_param5 $coldata
+    ]]></command>
+    <inputs>
+        <param type="data" multiple="true" name="featureCounts_output1" />
+        <param type="integer" name="thresh_cpm" value="1" label="thresh_cpm" help="cpm threshold to filter the low expressed genes"/>
+        <param type="integer" name="thresh_sample" value="3" label="thresh_sample" help="Minimum number of samples to have a high expressed genes (depending of the cpm threshold). Take the number of replicat to keep genes with genes only present in one of the condition"/>
+        <param type="text" name="rmun_list" value="" label="run_list" help="Run to remove from the bulk RNA-seq analyse after fastqc introspection (separated by ,) in the cpm_filtering.R script." />
+        <param type="text" name="rmproj" label="rmproj" value="" help="Ventralized_replicate_1,Ventralized_replicate_2,Ventralized_replicate_3,Ventralized_torso_replicate_1,Ventralized_torso_replicate_2,Ventralized_torso_replicate_3" />
+        <param type="data" name="coldata" label="coldata"/>
+    </inputs>
+    <outputs>
+        <data name="count" format="tabular" label="count" />
+        <data name="cpm_filtered" format="tabular" label="cpm_filtered" />
+        <data name="count_filtered" format="tabular" label="count_filtering">
+    </outputs>
+</tool>

@@ -1,0 +1,21 @@
+<tool id="simple_dataset" name="Simple Dataset" version="0.01" force_history_refresh="True">
+    <description>Creates a sample data set</description>
+
+    <requirements>
+        <requirement type="package">r-base</requirement>
+    </requirements>
+
+    <command detect_errors="exit_code"><![CDATA[
+        Rscript /home/audrey/Documents/Bulk_RNAseq_analyses/galaxy/tools/myTools/simple_dataset/simple_dataset.R --output_path SampleDataset
+    ]]></command>
+
+    <inputs>
+        <param name="job_name" type="text" size="25" label="output name" value="SampleDataset"/>
+    </inputs>
+
+    <outputs>
+        <collection type="list" label="$job_name" name="output1">
+            <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="SampleDataset" />
+        </collection>
+    </outputs>
+</tool>
