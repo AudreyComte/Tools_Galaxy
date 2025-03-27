@@ -25,30 +25,33 @@
         <requirement type="package" >bioconductor-enhancedvolcano</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        Rscript /media/audrey/data/galaxy/tools/myTools/Deseq2_Report/diffexp_reports_compilation_galaxy.R --output_path1 diffexp --output_path2 all_genes_stats --output_path3 signif_down_regulated --output_path4 signif_up_regulated --galaxy_input1 $rds --galaxy_input2 $names_files --galaxy_input3 $ref_level --galaxy_input4 $mutant_level --galaxy_param1 $gene_name --galaxy_param3 $lfcshrink_type --galaxy_param4 $FCcutoff --galaxy_param5 $pCcutoff --galaxy_param7 $nbpval --galaxy_param8 $metadata_table
+        Rscript /media/audrey/data/galaxy/tools/newTools/Deseq2_Report/diffexp_reports_compilation_galaxy.R --output_path1 diffexp --output_path2 all_genes_stats --output_path3 signif_down_regulated --output_path4 signif_up_regulated --galaxy_input1 $rds --galaxy_input2 $names_files --galaxy_input3 $ref_level --galaxy_input4 $mutant_level --galaxy_param1 $gene_name --galaxy_param3 $lfcshrink_type --galaxy_param4 $FCcutoff --galaxy_param5 $pCcutoff --galaxy_param7 $nbpval --galaxy_param8 $metadata_table --galaxy_output_names_stats $output_names_stats --galaxy_output_names_down $output_names_down --galaxy_output_names_up $output_names_up
     ]]></command>
     <inputs>
         <param type="data" multiple="true" name="rds" label="rds"/>
         <param type="data" name="names_files" label="names_files" format="txt" help=" "/>
-        <param type="data" name="ref_level" label="ref_level" format="txt" help=" "/>
-        <param type="data" name="mutant_level" label="mutant_level" format="txt" help=" "/>
-        <param type="text" name="gene_name" value="Dmel_CG8095,Dmel_CG1046,Dmel_CG9885,Dmel_CG1378,Dmel_CG9768,Dmel_CG9559,Dmel_CG2956,Dmel_CG3956" label="gene_name" help=" "/>
-        <param type="text" name="lfcshrink_type" value="apeglm" label="lfcshrink_type" help=" "/>
-        <param type="integer" name="FCcutoff" value="2" label="FCcutoff" help=" "/>
-        <param type="float" name="pCcutoff" value="0.01" label="pCcutoff" help=" "/>
-        <param type="integer" name="nbpval" value="50" label="nbpval" help=" "/>
-        <param type="data" name="metadata_table" label="Metadata_table" help=" "/>
+        <param type="data" name="ref_level" label="ref_level" format="txt" help="Reference to do the comparison"/>
+        <param type="data" name="mutant_level" label="mutant_level" format="txt" help="Mutant to represent the gene with the top p-value"/>
+        <param type="text" name="gene_name" value="Dmel_CG8095,Dmel_CG1046,Dmel_CG9885,Dmel_CG1378,Dmel_CG9768,Dmel_CG9559,Dmel_CG2956,Dmel_CG3956" label="gene_name" help="Gene name to see the expression between the condition (to see it appear on the volcano plot)"/>
+        <param type="text" name="lfcshrink_type" value="apeglm" label="lfcshrink_type" help="Shrinkage estimator for ranking and visualization (apeglm, normal or ashr)"/>
+        <param type="integer" name="FCcutoff" value="2" label="FCcutoff" help="Foldchange threshold"/>
+        <param type="float" name="pCcutoff" value="0.01" label="pCcutoff" help="qvalue threshold"/>
+        <param type="integer" name="nbpval" value="50" label="nbpval" help="Number of genes to select with the best p-value"/>
+        <param type="data" name="metadata_table" label="Metadata_table" help="Metadata"/>
     </inputs>
     <outputs>
         <collection type="list" format="html" label="diffexp" name="diffexp">
            <discover_datasets pattern="(?P&lt;name&gt;.*)" format="html" directory="diffexp"/>
         </collection>
+        <data name="output_names_stats" format="txt" label="output_names_stats" />
         <collection type="list" format="text" label="all_genes_stats" name="all_genes_stats">
            <discover_datasets pattern="(?P&lt;name&gt;.*)" format="text" directory="all_genes_stats"/>
         </collection>
+        <data name="output_names_down" format="txt" label="output_names_down" />
         <collection type="list" format="text" label="signif_down_regulated" name="signif_down_regulated">
            <discover_datasets pattern="(?P&lt;name&gt;.*)" tabular="text" directory="signif_down_regulated"/>
         </collection>
+        <data name="output_names_up" format="txt" label="output_names_up" />
         <collection type="list" format="text" label="signif_up_regulated" name="signif_up_regulated">
            <discover_datasets pattern="(?P&lt;name&gt;.*)" format="text" directory="signif_up_regulated"/>
         </collection>

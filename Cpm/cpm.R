@@ -30,8 +30,6 @@ output_file1 <- getOptionValue("--galaxy_output1")
 # Parameter
 param1 <- getOptionValue("--galaxy_param1")
 param2 <- getOptionValue("--galaxy_param2")
-param3 <- getOptionValue("--galaxy_param3")
-param4 <- getOptionValue("--galaxy_param4")
 param5 <- getOptionValue("--galaxy_param5")
 
 
@@ -65,6 +63,8 @@ library(tidyr)
 
 # Processing input files
 file_list <- strsplit(input_file1, ",")[[1]]
+
+file_list <- sort(file_list)
 
 # Read gene names from the first file
 gene_name <- read.delim(file_list[[1]], header = FALSE)
@@ -161,7 +161,3 @@ for (combo in condition_combinations) {
   write.table(dataframe_filtered_count, output_filter_count_comparaison, quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 }
-
-
-
-

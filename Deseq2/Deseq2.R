@@ -4,15 +4,11 @@
 #                          
 # #################################################################
 
-
-# How to execute this tool
-# $Rscript my_r_tool.R --input input.txt --output output.txt
-
 # Send R errors to stderr
-#options(show.error.messages = FALSE, error = function() {
-  #cat(geterrmessage(), file = stderr())
-  #q("no", 1, FALSE)
-#})
+options(show.error.messages = FALSE, error = function() {
+  cat(geterrmessage(), file = stderr())
+  q("no", 1, FALSE)
+})
 
 # Avoid crashing Galaxy with a UTF8 error on German LC settings
 loc <- Sys.setlocale("LC_MESSAGES", "en_US.UTF-8")
@@ -29,12 +25,9 @@ getOptionValue <- function(option) {
   return(NULL)
 }
 
-
 # Get options
 output_path2 <- getOptionValue("--output_path2")
 output_path1 <- getOptionValue("--output_path1")
-
-
 input <- getOptionValue("--galaxy_input")
 
 output_names_file <- getOptionValue("--galaxy_output_names_files")
@@ -48,12 +41,8 @@ file.create(output_names_mutant)
 
 thread_param <- getOptionValue("--galaxy_param_thread")
 param2_coldata <- getOptionValue("--galaxy_param2")
-#param3_rmproj_list <- getOptionValue("--galaxy_param3")
 
-# Print options to stderr for debugging
-#cat("\n input: ", input_file)
-#cat("\n output: ", output_file)
-
+# Create directories if they do not exist
 if (!dir.exists(output_path2)) {
   dir.create(output_path2, recursive = TRUE)
 }
@@ -62,25 +51,13 @@ if (!dir.exists(output_path1)) {
   dir.create(output_path1, recursive = TRUE)
 }
 
-
-
-########################################################################################################################################################################################################################################################################################################################################################################################################
-
-
 library(DESeq2)
 library(readr)
 
-#parallel <- FALSE
-#if (thread_param > 1) {
-  #library("BiocParallel")
-  #setup parallelization
-  #register(MulticoreParam(thread_param))
-  #parallel <- TRUE
-#}
-
-
 # Split the input string into a list of file paths
 file_list <- strsplit(input, ",")[[1]]
+
+file_list <- sort(file_list)
 
 # Read colData
 coldata_read <- read_tsv(param2_coldata)
@@ -133,8 +110,6 @@ process_file <- function(file_name) {
     # Save the DESeq object
     name <- paste0(ref_level, "_vs_", mutant_level)
     output_file2 <- file.path(output_path2, paste0(name, ".rds"))
-  
-    #output_file2 <- file.path(output_path2, paste0("all_rds_", ref_level, "_vs_", mutant_level, ".rds"))
     saveRDS(dds_result, file = output_file2)
     
     # Append the name of the output file to the text file
@@ -144,17 +119,28 @@ process_file <- function(file_name) {
 
     # Save the normalized data matrix
     normalized_counts <- counts(dds_result, normalized = TRUE)
-
-    name <- paste0(ref_level, "_vs_", mutant_level)
     output_file1 <- file.path(output_path1, paste0(name, ".tsv"))
-
-    #output_file1 <- file.path(output_path1, paste0("normalized_counts_", ref_level, "_vs_", mutant_level, ".tsv"))
     write.table(normalized_counts, file = output_file1, sep = "\t", quote = FALSE, col.names = NA)
   }
   
-  # Apply the function to each level without an explicit loop
+  # Apply the function to each level
   lapply(all_levels, process_level)
 }
 
-# Apply the function to each file in file_list
+# Process each file in file_list
 lapply(file_list, process_file)
+
+# Function to sort output_names_file alphabetically
+sort_output_names_file <- function(output_names_file) {
+  # Read all lines from the file
+  lines <- readLines(output_names_file)
+  
+  # Sort lines alphabetically
+  sorted_lines <- sort(lines)
+  
+  # Write sorted lines back to the file
+  writeLines(sorted_lines, output_names_file)
+}
+
+# Sort the names in output_names_file
+sort_output_names_file(output_names_file)

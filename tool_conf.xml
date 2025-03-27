@@ -127,23 +127,20 @@
     <tool file="phenotype_association/ldtools.xml" />
     <tool file="phenotype_association/master2pg.xml" />
   </section>
-  <section name="MyTools" id="mTools">
-    <tool file="myTools/toolExample.xml" />
-  </section>
-  <section name="test" id="test">
-    <tool file="myTools/test/test.xml" />
-  </section>
   <section name="cpm" id="cpm">
-    <tool file="myTools/cpm/cpm.xml" />
+    <tool file="newTools/Cpm/cpm.xml" />
   </section>
   <section name="Deseq2" id="Deseq2">
-    <tool file="myTools/Deseq2/Deseq2.xml" />
+    <tool file="newTools/Deseq2/Deseq2.xml" />
   </section>
   <section name="Deseq2_Report" id="Deseq2_Report">
-    <tool file="myTools/Deseq2_Report/Deseq2_Report.xml" />
+    <tool file="newTools/Deseq2_Report/Deseq2_Report.xml" />
   </section>
-  <section name="Simple_dataset" id="simple_dataset">
-    <tool file="myTools/simple_dataset/simple_dataset.xml" />
+  <section name="Intersection" id="Intersection">
+    <tool file="newTools/Intersection/intersection.xml" />
+  </section>
+  <section name="Intersection_Shruti" id="Intersection_Shruti">
+    <tool file="newTools/Intersection/intersection_Shruti.xml" />
   </section>
   <!--
   <section id="interactivetools" name="Interactive tools">

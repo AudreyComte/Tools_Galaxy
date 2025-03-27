@@ -6,15 +6,22 @@
         <requirement type="package" >r-readr</requirement>
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-        Rscript /home/audrey/Documents/Bulk_RNAseq_analyses/galaxy/tools/myTools/Deseq2/deseq2_version2.R --galaxy_input $filter_count --galaxy_output1 $normalized_counts_file --galaxy_output2 $all_reads --galaxy_param_thread $thread --galaxy_param2 $sample_table
+        Rscript /media/audrey/data/galaxy/tools/newTools/Deseq2/Deseq2.R --output_path2 all_reads --output_path1 normalized_counts --galaxy_input $filter_count --galaxy_output_names_files $output_names_files --galaxy_output_names_ref $output_names_ref --galaxy_output_names_mutant $output_names_mutant --galaxy_param_thread $thread --galaxy_param2 $metadata_table
     ]]></command>
     <inputs>
-        <param type="data" name="filter_count" label="filter_count" />
-        <param type="integer" name="thread" value="1" label="thread" help=" "/>
-        <param type="data" name="sample_table" label="sample_table" help=" "/>
+        <param type="data" multiple="true" name="filter_count" label="filter_count"/>
+        <param type="integer" name="thread" value="1" max="12" label="thread" help="Number of threads"/>
+        <param type="data" name="metadata_table" label="Metadata_table" help="Metadata"/>
     </inputs>
     <outputs>
-        <data name="normalized_counts_file" format="tabular" label="normalized_counts_file" />
-        <data name="all_reads" format="rds" label="all_reads" />
+    	<data name="output_names_files" format="txt" label="output_names_files"/>
+    	<data name="output_names_ref" format="txt" label="output_names_ref"/>
+    	<data name="output_names_mutant" format="txt" label="output_names_mutant"/>
+        <collection type="list" label="all_reads" name="all_reads">
+           <discover_datasets pattern="(?P&lt;name&gt;.*)" sort_by="name" directory="all_reads"/>
+        </collection>
+        <collection type="list" label="normalized_counts" name="normalized_counts">
+           <discover_datasets pattern="(?P&lt;name&gt;.*)" directory="normalized_counts"/>
+        </collection>
     </outputs>
 </tool>

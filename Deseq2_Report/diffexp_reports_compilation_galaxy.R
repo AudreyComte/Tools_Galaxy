@@ -19,6 +19,27 @@ getOptionValue <- function(option) {
   return(NULL)
 }
 
+# Get options
+input_file1 <- getOptionValue("--galaxy_input1")
+input_file2 <- getOptionValue("--galaxy_input2")
+input_file3 <- getOptionValue("--galaxy_input3")
+input_file4 <- getOptionValue("--galaxy_input4")
+
+param1 <- getOptionValue("--galaxy_param1")
+param3 <- getOptionValue("--galaxy_param3")
+param4 <- getOptionValue("--galaxy_param4")
+param5 <- getOptionValue("--galaxy_param5")
+param7 <- getOptionValue("--galaxy_param7")
+param8 <- getOptionValue("--galaxy_param8")
+
+output_names_stats <- getOptionValue("--galaxy_output_names_stats")
+
+output_names_file_down <- getOptionValue("--galaxy_output_names_down")
+
+output_names_file_up <- getOptionValue("--galaxy_output_names_up")
+
+
+
 output_path1 <- getOptionValue("--output_path1")
 if (!dir.exists(output_path1)) {
   dir.create(output_path1, recursive = TRUE)
@@ -43,18 +64,7 @@ if (!dir.exists(output_path4)) {
 absolute_path4 <- normalizePath(output_path4)
 
 
-# Get options
-input_file1 <- getOptionValue("--galaxy_input1")
-input_file2 <- getOptionValue("--galaxy_input2")
-input_file3 <- getOptionValue("--galaxy_input3")
-input_file4 <- getOptionValue("--galaxy_input4")
 
-param1 <- getOptionValue("--galaxy_param1")
-param3 <- getOptionValue("--galaxy_param3")
-param4 <- getOptionValue("--galaxy_param4")
-param5 <- getOptionValue("--galaxy_param5")
-param7 <- getOptionValue("--galaxy_param7")
-param8 <- getOptionValue("--galaxy_param8")
 
 
 # Print options to stderr for debugging
@@ -88,6 +98,8 @@ mutant_levels <- readLines(input_file4)
 # Liste des fichiers
 file_list <- strsplit(input_file1, ",")[[1]]
 
+file_list <- sort(file_list)
+
 # Vérifier que la longueur de file_list et names est identique pour éviter les erreurs de correspondance
 if (length(file_list) != length(names)) {
   stop("stop")
@@ -105,9 +117,21 @@ for (i in seq_along(file_list)) {
   output_file1 <- paste0("diffexp_", namee, ".html")
   
   # Rendu du document RMarkdown
-  rmarkdown::render(input = "/media/audrey/data/galaxy/tools/myTools/Deseq2_Report/diffexp.Rmd",
+  rmarkdown::render(input = "/media/audrey/data/galaxy/tools/newTools/Deseq2_Report/diffexp.Rmd",
                     output_format = "html_document",
                     output_file  = output_file1,
                     output_dir = output_path1,
                     quiet = FALSE)
 }
+
+names_stats <- readLines(output_names_stats)
+names_stats_sorted <- sort(names_stats)
+writeLines(names_stats_sorted, output_names_stats)
+
+names_file_down <- readLines(output_names_file_down)
+names_file_down_sorted <- sort(names_file_down)
+writeLines(names_file_down_sorted, output_names_file_down)
+
+names_file_up <- readLines(output_names_file_up)
+names_file_up_sorted <- sort(names_file_up)
+writeLines(names_file_up_sorted, output_names_file_up)

@@ -384,7 +384,7 @@ galaxy:
   # should use the "install_database_engine_option_" prefix.
   # For more options, please check SQLAlchemy's documentation at
   # https://docs.sqlalchemy.org/en/14/core/engines.html?highlight=create_engine#sqlalchemy.create_engine
-  #database_connection: null
+  database_connection: postgresql://galaxy_user4:password4@localhost/galaxy_db4
 
   # If the server logs errors about not having enough database pool
   # connections, you will want to increase these values, or consider

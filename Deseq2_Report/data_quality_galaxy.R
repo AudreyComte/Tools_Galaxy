@@ -1,4 +1,4 @@
-#source("/media/audrey/data/galaxy/tools/myTools/Deseq2_Report/diffexp_reports_compilation_galaxy.R")
+#source("/media/audrey/data/galaxy/tools/newTools/Deseq2_Report/diffexp_reports_compilation_galaxy.R")
 ## @knitr heatmap-count
 # load deseq2 data
 dds <- readRDS(RDS)
@@ -60,4 +60,3 @@ if(length(gene_name_list)!= 0){
     plot(ggplot)
   }
 }
-

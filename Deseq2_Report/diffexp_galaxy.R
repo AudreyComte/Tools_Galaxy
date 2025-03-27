@@ -1,5 +1,5 @@
-#source("/media/audrey/data/galaxy/tools/myTools/Deseq2_Report/diffexp_reports_compilation_galaxy.R")
-#source("/media/audrey/data/galaxy/tools/myTools/Deseq2_Report/data_quality_galaxy.R")
+#source("/media/audrey/data/galaxy/tools/newTools/Deseq2_Report/diffexp_reports_compilation_galaxy.R")
+#source("/media/audrey/data/galaxy/tools/newTools/Deseq2_Report/data_quality_galaxy.R")
 
 
 ## @knitr diffexp
@@ -30,8 +30,9 @@ results <- results(dds, contrast = c("condition", condition))
 rlog_results <- lfcShrink(dds, coef = comparison_df[[1]], res = results, type = lfcshrink_type)
 rlog_results <- rlog_results[order(rlog_results$padj),]
 
-name <- paste0(mutant_level, "_vs_", ref_level, "_all_gene_stats")
-output_file2 <- file.path(absolute_path2, paste0(name, ".tsv"))
+name <- paste0(mutant_level, "_vs_", ref_level, "_all_gene_stats.tsv")
+write(name, file = output_names_stats, append = TRUE)
+output_file2 <- file.path(absolute_path2, name)
 # write.table(as.data.frame(rlog_results), file = paste("/home/audrey/Documents/Diff_expression/", outputname, "_all_genes_stats.tsv", sep = ""), quote = FALSE, sep = "\t")
 write.table(as.data.frame(rlog_results), file = output_file2, quote = FALSE, sep = "\t")
 
@@ -63,15 +64,21 @@ keyvals[which(rlog_results$log2FoldChange < -FC & rlog_results$padj < p)] <- 'bl
 names(keyvals)[which(rlog_results$log2FoldChange < -FC & rlog_results$padj < p)] <- 'Signif. down-regulated'
 sdr <- subset(rlog_results, (rlog_results$log2FoldChange < -FC) & (rlog_results$padj < p))
 #write.table(as.data.frame(sdr), file = paste("/home/audrey/Documents/Diff_expression/", outputname, "_signif-down-regulated.txt", sep = ""), quote = FALSE, sep = "\t")
-output_file3 <- file.path(absolute_path3, paste0(mutant_level, "_vs_", ref_level, "_signif_down_regulated.txt"))
-  
+name_down <- paste0(mutant_level, "_vs_", ref_level, "_signif_down_regulated.txt")
+output_file3 <- file.path(absolute_path3, name_down)
+
+write(name_down, file = output_names_file_down, append = TRUE)
+
 write.table(as.data.frame(sdr), file = output_file3, quote = FALSE, sep = "\t")
 
 keyvals[which(rlog_results$log2FoldChange > FC & rlog_results$padj < p)] <- 'red2'
 names(keyvals)[which(rlog_results$log2FoldChange > FC & rlog_results$padj < p)] <- 'Signif. up-regulated'
 sur <- subset(rlog_results, (rlog_results$log2FoldChange > FC) & (rlog_results$padj < p))
 #write.table(as.data.frame(sur), file = paste("/home/audrey/Documents/Diff_expression/", outputname, "_signif-up-regulated.txt", sep = ""), quote = FALSE, sep = "\t")
-output_file4 <- file.path(absolute_path4, paste0(mutant_level, "_vs_", ref_level, "_signif_up_regulated.txt"))
+name_up <- paste0(mutant_level, "_vs_", ref_level, "_signif_up_regulated.txt")
+output_file4 <- file.path(absolute_path4, name_up)
+
+write(name_up, file = output_names_file_up, append = TRUE)
 
 write.table(as.data.frame(sur), file = output_file4, quote = FALSE, sep = "\t")
 
@@ -165,4 +172,3 @@ p=ggplot(gathered_topnorm) +
 	theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
 	theme(plot.title = element_text(hjust = 0.5))
 ggplotly(p)
-

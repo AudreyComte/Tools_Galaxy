@@ -36,8 +36,8 @@ library(EnhancedVolcano)
 
 [//]: # "Load the various chunks in the various files"
 ```{r readChunks, echo=FALSE, warning=TRUE, message=TRUE}
-read_chunk( path="/media/audrey/data/galaxy/tools/myTools/Deseq2_Report/data_quality_galaxy.R")
-read_chunk( path="/media/audrey/data/galaxy/tools/myTools/Deseq2_Report/diffexp_galaxy.R")
+read_chunk( path="/media/audrey/data/galaxy/tools/newTools/Deseq2_Report/data_quality_galaxy.R")
+read_chunk( path="/media/audrey/data/galaxy/tools/newTools/Deseq2_Report/diffexp_galaxy.R")
 ```
 # Data quality assessment by sample clustering and visualization
 
